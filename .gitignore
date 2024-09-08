@@ -1,0 +1,5 @@
+/bin/
+/build/
+/cmake-build-debug-visual-studio/
+/cmake-build-minsizerel-visual-studio/
+/cmake-build-release-visual-studio/
