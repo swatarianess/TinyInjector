@@ -16,10 +16,10 @@ REM Binary output path.
 SET binary_path=bin/tinyinjector.exe
 
 REM Required libraries
-SET libraries=-luser32 -lkernel32 -lntdll -lshell32
+SET libraries=-luser32 -lkernel32 -lntdll -lshell32 -lmsvcrt
 
 REM Compilation flags.
-set flags=--target=x86_64-pc-windows-gnu -mwindows -Wall -std=c++23 -nostdlib -nostartfiles -fno-rtti -fno-exceptions -fuse-ld=lld -Wl,/SUBSYSTEM:CONSOLE -e entry_point  -fno-use-cxa-atexit
+set flags=--target=x86_64-pc-windows-gnu -mwindows -Wall -std=c++23 -nostdlib -nostartfiles -fno-rtti -fno-exceptions -fuse-ld=lld -Wl,/SUBSYSTEM:CONSOLE -e entry_point -fno-use-cxa-atexit
 
 REM Debug only flags.
 SET flags_debug=-g

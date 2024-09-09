@@ -3,6 +3,7 @@
 //
 
 #include <windows.h>
+#include <cwchar>
 
 /**
  * \brief Our "main" function
@@ -25,7 +26,7 @@ void printHelpText();
 /**
  * \brief Usage help text
  */
-const char USAGE_HELP_TEXT[] = "USAGE: tinyinjector.exe <Window Name> <Path to Dll>";
+constexpr char USAGE_HELP_TEXT[] = "USAGE: tinyinjector.exe <Window Name> <Path to Dll>";
 
 /**
  * \brief Retrieves the process ID using the window name.
@@ -73,7 +74,7 @@ unsigned int injector() {
         return 3;
     }
 
-    BOOL res = WriteProcessMemory(hProcess, allocation, dllPath, lstrlenW (dllPath) * sizeof(wchar_t), nullptr);
+    BOOL res = WriteProcessMemory(hProcess, allocation, reinterpret_cast<const void*>(dllPath), (wcslen(dllPath) + 1)  * sizeof(wchar_t), nullptr);
     if (res == FALSE) {
         VirtualFreeEx(hProcess, allocation, 0, MEM_RELEASE);
         CloseHandle(hProcess);
@@ -95,7 +96,7 @@ unsigned int injector() {
     }
 
     // ReSharper disable once CppStringLiteralToCharPointerConversion
-    WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), L"Success!\r\n", lstrlenA(reinterpret_cast<LPCSTR>(L"Success!\r\n")) * sizeof(wchar_t), nullptr,
+    WriteFile(GetStdHandle(STD_OUTPUT_HANDLE), L"Success!\r\n", wcslen(L"Success!\r\n") * sizeof(wchar_t), nullptr,
               nullptr);
 
     CloseHandle(hThread);
@@ -146,4 +147,8 @@ void* getLoadLibraryWAddress() {
     }
 
     return reinterpret_cast<void*>(GetProcAddress(hModule, "LoadLibraryW"));
+}
+
+int main() {
+    return entry_point();
 }
